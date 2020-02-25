@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { NavController } from '@ionic/angular';
 import { TransactionService } from 'src/app/services/api/transaction.service';
 import { BookService } from 'src/app/services/api/book.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { MessageService } from 'src/app/services/alerts/message.service';
+import { UserTransactionService } from 'src/app/services/api/user-transaction.service';
 
 @Component({
   selector: 'app-item-transaction',
@@ -12,27 +13,28 @@ import { MessageService } from 'src/app/services/alerts/message.service';
   styleUrls: ['./item-transaction.component.scss'],
 })
 export class ItemTransactionComponent implements OnInit {
-  a
+
   @Input()
   transaction: any
   @Input()
   itsRequest: boolean
-
+  @Output() emitEvent = new EventEmitter<any>();
 
   createdCode = null;
   scannedCode = null;
+  contact = null;
 
   constructor(
     private dataService: DataService,
     private _transactionService: TransactionService,
     private _bookService: BookService,
     private _alertService: MessageService,
+    private _userTransactionService: UserTransactionService,
     private barcodeScanner: BarcodeScanner,
     public navCtrl: NavController
   ) { }
 
   ngOnInit() {
-    console.log(this.itsRequest)
   }
 
   updateState(idstate) {
@@ -46,7 +48,7 @@ export class ItemTransactionComponent implements OnInit {
           let book = this.transaction.book
           book.available = 0
           this._bookService.update(book).subscribe(
-            res => window.location.reload(),
+            res => this.emitEvent.emit(this.itsRequest),
             err => console.log(err)
           )
         }
@@ -55,22 +57,26 @@ export class ItemTransactionComponent implements OnInit {
           let book = this.transaction.book
           book.available = 1
           this._bookService.update(book).subscribe(
-            res => window.location.reload(),
+            res => this.emitEvent.emit(this.itsRequest),
             err => console.log(err)
           )
         }
-        window.location.reload();
+        this.emitEvent.emit(this.itsRequest);
       });
   }
 
 
   allowTransaction() {
-    this._alertService.presentAlertConfirm('Aceptar Transaccion', 'Esta Seguro?', (res) => {
+    this._alertService.presentAlertConfirm('Aceptar Transaccion', 'Esta Seguro?', res => {
       if (res) {
         let update = this.transaction
         update.transactionStateId = 11
         this._transactionService.update(update).subscribe(
-          () => window.location.reload()
+          (transaction) =>
+            this._alertService.presentMessage('Transaccion Aceptada', 'Se enviaran tus Datos de Contacto',
+
+              () => this.emitEvent.emit(this.itsRequest)
+            )
         );
       }
     })
@@ -81,14 +87,16 @@ export class ItemTransactionComponent implements OnInit {
         let update = this.transaction
         update.transactionStateId = idstate // 41 == cancel 21 == denny
         this._transactionService.update(update).subscribe(
-          () => {
+          (transaction) => {
             let book = this.transaction.book
-            book.available = 1
+            book.available = 1 //Book Available
             this._bookService.update(book).subscribe(
               res => {
-                this._alertService.presentMessage('Transaccion Aceptada', 'Se enviaran tus datos de contacto al solicitante',
+                this._alertService.presentMessage('Transaccion Cancelada', '',
 
-                  () => window.location.reload()
+                  () => {
+                    this.emitEvent.emit(this.itsRequest)
+                  }
                 )
               },
               err => console.log(err)
@@ -125,12 +133,12 @@ export class ItemTransactionComponent implements OnInit {
               if (res.transactionStateId === 91) {
                 this._alertService.presentMessage('Escaneo Exitoso', 'Ahora Debes compeltar la Transaccion',
 
-                  () => window.location.reload()
+                  () => this.navCtrl.navigateForward('transaction')
                 )
               } else if (res.transactionStateId === 81) {
                 this._alertService.presentMessage('Escaneo Fallido', 'Debes Regenerar el QR',
 
-                  () => window.location.reload()
+                  () => this.navCtrl.navigateForward('transaction')
                 )
               }
             }
@@ -152,12 +160,12 @@ export class ItemTransactionComponent implements OnInit {
           if (res.transactionStateId === 91) {
             this._alertService.presentMessage('Escaneo Exitoso', 'El Dueño del Libro debe compeltar la Transaccion',
 
-              () => window.location.reload()
+              () => this.emitEvent.emit(this.itsRequest)
             )
           } else if (res.transactionStateId === 81) {
             this._alertService.presentMessage('Escaneo Fallido', 'El Dueño del Libro debe Regenerar el QR',
 
-              () => window.location.reload()
+              () => this.emitEvent.emit(this.itsRequest)
             )
           }
         })
@@ -170,7 +178,19 @@ export class ItemTransactionComponent implements OnInit {
     this._transactionService.regenerateToken(this.transaction.id).subscribe(
       res => {
         console.log(res)
+        this.emitEvent.emit(this.itsRequest)
       })
   }
 
+  getContactDetail() {
+    this._userTransactionService.getContactDetaild(this.transaction.id).subscribe(
+      res => {
+        if (this.itsRequest) {
+          this.contact = res.toUser
+        } else {
+          this.contact = res.fromUser
+        }
+      }
+    )
+  }
 }

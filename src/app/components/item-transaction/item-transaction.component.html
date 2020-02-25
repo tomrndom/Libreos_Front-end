@@ -16,11 +16,17 @@
           Esperando Respuesta del Dueño del libro
           <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
         </ion-label>
-        <ion-label *ngSwitchCase="11">
+        <div *ngSwitchCase="11">
           <!-- Allowed-->
-          Se acepto la Peticion [Datos de Contacto del Dueño del Libro]
+          Se acepto la Peticion
+          <ion-button color="secondary" (click)="getContactDetail()">Mostrar Datos de contacto</ion-button>
+          <div *ngIf="contact">
+            <p>{{contact.firstname}}-{{contact.lastname}}</p>
+            <p>{{contact.email}}</p>
+            <p>{{contact.phone}}</p>
+          </div>
           <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
-        </ion-label>
+        </div>
 
         <div *ngSwitchCase="21">
           <!--Deny-->
@@ -69,7 +75,13 @@
             <ion-label>
               Se enviaron tus datos de contacto al Solicitante
               <br>
-              Debes Esperar a que el te contacte
+              <ion-button color="secondary" (click)="getContactDetail()">Mostrar Datos de solicitante</ion-button>
+              <br>
+              <div *ngIf="contact">
+                <p>{{contact.firstname}}-{{contact.lastname}}</p>
+                <p>{{contact.email}}</p>
+                <p>{{contact.phone}}</p>
+              </div>
             </ion-label>
             <ion-label>Si la transaccion no se completa <br>luego de generar el QR. QUEDARA CANCELADA</ion-label>
             <ion-button color="secondary" (click)="updateState(71)">Generar QR</ion-button>

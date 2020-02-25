@@ -22,6 +22,7 @@
     <ion-list>
       <ion-item *ngFor="let userTransaction of requestTransactions">
         <app-item-transaction 
+        (emitEvent)="receiveEvent($event)"
         [transaction]="userTransaction.transaction"
         [itsRequest]="true">
 
@@ -34,6 +35,7 @@
     <ion-list>
       <ion-item *ngFor="let userTransaction of pendingTransactions">
         <app-item-transaction 
+        (emitEvent)="receiveEvent($event)"
         [transaction]="userTransaction.transaction"
         [itsRequest]="false">
       </app-item-transaction>

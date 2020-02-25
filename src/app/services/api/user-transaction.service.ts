@@ -33,4 +33,8 @@ export class UserTransactionService {
     return this.userTransactionApi.patchAttributes(id, userTransaction);
   }
 
+  getContactDetaild(transactionId: number): Observable<any> {
+    return this.userTransactionApi.getContactInfo(transactionId);
+  }
+
 }
