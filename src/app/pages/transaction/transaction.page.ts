@@ -22,66 +22,8 @@ export class TransactionPage implements OnInit {
   ngOnInit() {
     this._AppUserService.user.then((user) => {
       this.user = JSON.parse(user)
-      let filterRequestTransactions = {
-        "where": {
-          "and": [
-            {
-              "fromUserId": `${this.user.id}`
-            },
-            {
-              "deletedAt": null
-            }
-          ]
-        },
-        "include": [
-          {
-            "relation": "transaction", "scope": {
-              "include": [
-                { "relation": "book", "scope": { "include": ["gender", { 'bookConditions': 'condition' }] } },
-                { "relation": "transactionStates" }
-              ]
-            }
-          }
-        ]
-      };
-
-      let filterPendingTransactions = {
-        "where": {
-          "and": [
-            {
-              "toUserId": `${this.user.id}`
-            },
-            {
-              "deletedAt": null
-            }
-          ]
-        },
-        "include": [
-          {
-            "relation": "transaction", "scope": {
-              "include": [
-                { "relation": "book", "scope": { "include": ["gender", { 'bookConditions': 'condition' }] } },
-                { "relation": "transactionStates" }
-              ]
-            }
-          }
-        ]
-      };
-
-      this._userTransactionService.getAll(filterRequestTransactions).subscribe(
-        res => {
-          this.requestTransactions = res
-          console.log(this.requestTransactions)
-        }
-      )
-
-      this._userTransactionService.getAll(filterPendingTransactions).subscribe(
-        res => {
-          this.pendingTransactions = res
-          console.log(this.pendingTransactions)
-        }
-      )
-
+      this.getPendings();
+      this.getRequest();
 
     });
 
@@ -90,4 +32,76 @@ export class TransactionPage implements OnInit {
     this.navCtrl.back();
   }
 
+  getPendings() {
+    let filterPendingTransactions = {
+      "where": {
+        "and": [
+          {
+            "toUserId": `${this.user.id}`
+          },
+          {
+            "deletedAt": null
+          }
+        ]
+      },
+      "include": [
+        {
+          "relation": "transaction", "scope": {
+            "include": [
+              { "relation": "book", "scope": { "include": ["gender", { 'bookConditions': 'condition' }] } },
+              { "relation": "transactionStates" }
+            ]
+          }
+        }
+      ]
+    };
+    this._userTransactionService.getAll(filterPendingTransactions).subscribe(
+      res => {
+        this.pendingTransactions = res
+        console.log(this.pendingTransactions)
+      }
+    )
+  }
+
+  getRequest() {
+    let filterRequestTransactions = {
+      "where": {
+        "and": [
+          {
+            "fromUserId": `${this.user.id}`
+          },
+          {
+            "deletedAt": null
+          }
+        ]
+      },
+      "include": [
+        {
+          "relation": "transaction", "scope": {
+            "include": [
+              { "relation": "book", "scope": { "include": ["gender", { 'bookConditions': 'condition' }] } },
+              { "relation": "transactionStates" }
+            ]
+          }
+        }
+      ]
+    };
+    this._userTransactionService.getAll(filterRequestTransactions).subscribe(
+      res => {
+        this.requestTransactions = res
+        console.log(this.requestTransactions)
+      }
+    )
+  }
+  
+  receiveEvent($event) {
+    console.log('EVENTO', $event)
+    if ($event) {
+      this.getRequest();
+
+    } else {
+      this.getPendings();
+    }
+
+  }
 }

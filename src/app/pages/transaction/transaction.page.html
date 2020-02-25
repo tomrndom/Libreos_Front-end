@@ -20,14 +20,16 @@
     <ion-title>Mis solicitudes</ion-title>
     <br>
     <ion-list *ngFor="let userTransaction of requestTransactions">
-      <app-item-transaction [transaction]="userTransaction.transaction" [itsRequest]="true">
+      <app-item-transaction (emitEvent)="receiveEvent($event)" [transaction]="userTransaction.transaction"
+        [itsRequest]="true">
       </app-item-transaction>
     </ion-list>
 
     <ion-title>Solicitudes de la comunidad</ion-title>
     <br>
     <ion-list *ngFor="let userTransaction of pendingTransactions">
-      <app-item-transaction [transaction]="userTransaction.transaction" [itsRequest]="true">
+      <app-item-transaction (emitEvent)="receiveEvent($event)" [transaction]="userTransaction.transaction"
+        [itsRequest]="false">
       </app-item-transaction>
     </ion-list>
   </div>
