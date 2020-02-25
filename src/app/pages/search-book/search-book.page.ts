@@ -13,7 +13,8 @@ import { NavController } from '@ionic/angular';
 export class SearchBookPage implements OnInit {
   userId: number
   searchTerm = ""
-  message = "Ingrese Termino de Busqueda"
+  message = ""
+  range: number;
   bookList: any[] = []
   
   constructor(
@@ -28,6 +29,9 @@ export class SearchBookPage implements OnInit {
     })
   }
 
+  searchBooks(range: number) {
+    console.log('looking books in ', range, ' kms');
+  }
 
   onEnter() {
 
