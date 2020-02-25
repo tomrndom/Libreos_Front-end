@@ -16,3 +16,9 @@ ion-slide>img {
     max-width: 60%;
     margin: 36px 0;
 }
+
+.start-guide {
+    &__img {
+        width: 200px;
+    }
+}

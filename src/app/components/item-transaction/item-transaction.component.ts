@@ -32,7 +32,7 @@ export class ItemTransactionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.itsRequest)
+    console.log(this.transaction)
   }
 
   updateState(idstate) {

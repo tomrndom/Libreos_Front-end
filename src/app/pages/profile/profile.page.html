@@ -1,4 +1,4 @@
-<ion-header translucent>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -8,7 +8,7 @@
 
     <ion-buttons slot="primary" (click)="goBack()">
       <ion-button>
-        <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -16,9 +16,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div id="container">
+  <div class="ion-padding" id="container">
     <ion-card>
-      <ion-card-header text-center>
+      <ion-card-header class="ion-text-center">
         <ion-avatar class="profile__avatar">
           <img src="../../../assets/img/user_avatar.png">
         </ion-avatar>
@@ -44,8 +44,8 @@
 
         <br>
 
-        <div class="profile__buttons" text-right>
-          <ion-button class="first-btn">Dar de Baja</ion-button>
+        <div class="profile__buttons ion-text-right">
+          <ion-button class="first-btn">Dar de baja</ion-button>
           <ion-button class="second-btn" (click)="goToEdit()">Editar</ion-button>
         </div>
       </ion-card-content>
