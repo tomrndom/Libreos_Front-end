@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+  
+      <ion-title>Buscar Libro</ion-title>
+  
+      <ion-buttons slot="primary" (click)="goBack()">
+        <ion-button>
+          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+  
+    </ion-toolbar>
+  </ion-header>
+
+
+<ion-content>
+  <div id="container">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h1>Buscar por Libro o Por Autor</h1>
+          <ion-item>
+            <ion-label position="floating">Busqueda</ion-label>
+            <ion-input  (keyup.enter)="onEnter()"  [(ngModel)]="searchTerm"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row> 
+          <ion-item *ngIf="message">
+              <ion-label>{{message}}</ion-label>
+          </ion-item>
+        <ion-item *ngFor="let book of bookList">
+            <app-item-book [book]="book"></app-item-book>
+        </ion-item>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

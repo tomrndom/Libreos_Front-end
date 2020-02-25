@@ -1,0 +1,16 @@
+.profile {
+    &__avatar {
+        margin: 0 auto;
+    }
+
+    &__buttons {
+
+        .first-btn {
+            --background: var(--ion-color-danger);
+        }
+        
+        .second-btn {
+            --background: var(--ion-color-secondary);
+        }
+    }
+}

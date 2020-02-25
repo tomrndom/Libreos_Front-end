@@ -1,0 +1,31 @@
+<ion-grid style="height: 100%">
+  <ion-row class="ion-align-items-center ion-justify-content-center" style="height: 100%">
+    <ion-card>
+      <ion-card-header class="ion-align-self-center">
+        <img class="login__img" src="../../assets/img/libreos_logo.jpeg" />
+        <ion-card-title class="ion-text-center login__title">Libreos</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating" autofocus>Usuario</ion-label>
+          <ion-input [(ngModel)]="user" type="text" clear-input></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input [(ngModel)]="password" type="password" clear-input></ion-input>
+        </ion-item>
+
+        <br>
+
+        <div class="ion-text-center">
+          <ion-button size="block" (click)="login()">Ingresar</ion-button>
+          <br>
+          ¿No tenés cuenta? <a (click)="register()">
+            Registrate </a>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-row>
+</ion-grid>

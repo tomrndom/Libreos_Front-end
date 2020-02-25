@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Inicio
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen style="height: 100%">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Agrega un libro</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Agregá a tu biblioteca un libro que vayas a donar a la comunidad.
+      <ion-button class="home-first-btn" expand="full" (click)="goToAddBook()">
+        <ion-icon slot="start" color="light" name="add"></ion-icon>
+        Agregar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Busca un libro</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Buscá y solicitá un libro de la comunidad cerca tuyo.
+      <ion-button class="home-second-btn" expand="full" (click)="goToSearchBook()">
+        <ion-icon slot="start" color="light" name="search"></ion-icon>
+        Buscar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,132 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-subtitle>{{transaction.book.authors}} - {{transaction.book.gender.name}}</ion-card-subtitle>
+    <ion-card-title>{{transaction.book.title}}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-button color="primary" (click)="viewDetailBook()">Ver Libro</ion-button>
+    <br>
+
+
+    <div *ngIf="itsRequest else noRequest">
+      <ion-label>Has Solicitado El Libro</ion-label>
+      <div [ngSwitch]="transaction.transactionStates.id">
+        <ion-label *ngSwitchCase="1">
+          <!-- Pending-->
+          Esperando Respuesta del Dueño del libro
+          <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
+        </ion-label>
+        <ion-label *ngSwitchCase="11">
+          <!-- Allowed-->
+          Se acepto la Peticion [Datos de Contacto del Dueño del Libro]
+          <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
+        </ion-label>
+
+        <div *ngSwitchCase="21">
+          <!--Deny-->
+          <ion-label *ngSwitchCase="21">
+            <!--Deny-->
+            Transaccion Denegada Por el dueño del libro.
+            Puedes esperar y ver si se reanuda o cancelar la solicitud
+          </ion-label>
+          <ion-button color="secondary" (click)="cancelTransaction(41)">Eliminar</ion-button>
+        </div>
+
+        <ion-label *ngSwitchCase="31">
+          <!--Complete Dejar de mostrar y mostrar en Mis libros-->
+          Transaccion Completada, Puedes ver el libro en Mis libros
+        </ion-label>
+        <div *ngSwitchCase="41">
+          <ion-label>Transaccion Cancelada! No hay vuelta atras</ion-label>
+          <ion-label>En unos Dias desaparecera de la vista</ion-label>
+        </div>
+        <ion-label *ngSwitchCase="51">
+          Por algun motivo la transaccion Fallo
+          por favore Comunicarse con algun moderador
+        </ion-label>
+        <ion-label *ngSwitchCase="61">
+          Se acabo el Tiempo de Espera de la Transaccion
+          La transaccion a sido cancelada
+          Dentro de Poco dejaras de ver esta transaccion
+        </ion-label>
+        <div *ngSwitchCase="71 || 101">
+          <ion-button color="secondary" (click)="scanQR()">Escanear QR</ion-button>
+        </div>
+      </div>
+
+    </div>
+
+    <ng-template #noRequest>
+      <div>
+        <div [ngSwitch]="transaction.transactionStates.id">
+          <div *ngSwitchCase="1">
+            <!-- Pending-->
+            <ion-button color="secondary" (click)="allowTransaction()">Aceptar</ion-button>
+            <ion-button color="secondary" (click)="cancelTransaction(41)">Denegar</ion-button>
+          </div>
+          <div *ngSwitchCase="11">
+            <!-- Allowed-->
+            <ion-label>
+              Se enviaron tus datos de contacto al Solicitante
+              <br>
+              Debes Esperar a que el te contacte
+            </ion-label>
+            <ion-label>Si la transaccion no se completa <br>luego de generar el QR. QUEDARA CANCELADA</ion-label>
+            <ion-button color="secondary" (click)="updateState(71)">Generar QR</ion-button>
+            <ion-label>Cancelar en Este Punto Te Penalizara!!</ion-label>
+            <ion-button color="secondary" (click)="cancelTransaction(41)">Denegar</ion-button>
+          </div>
+
+          <ion-label *ngSwitchCase="21">
+            <!-- Deny-->
+            Denegaste la Transaccion,<br> El libro esta disponible para ser solicitado por alguien mas
+            <br>
+            <ion-button color="secondary" (click)="updateState(1)">Reanudar</ion-button>
+            <br>
+            <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
+          </ion-label>
+          <ion-label *ngSwitchCase="31">
+            <!--Complete Dejar de mostrar y mostrar en Mis libros-->
+            Transaccion Completada con extio el Dia DD//MM//YY
+          </ion-label>
+          <ion-label *ngSwitchCase="41">
+            Transaccion Cancelada! No hay vuelta atras
+            En unos Dias desaparecera de la vista
+          </ion-label>
+          <ion-label *ngSwitchCase="51">
+            Por algun motivo la transaccion Fallo
+            por favore Comunicarse con algun moderador
+          </ion-label>
+          <ion-label *ngSwitchCase="61">
+            Se acabo el Tiempo de Espera de la Transaccion
+            La transaccion a sido cancelada
+            Dentro de Poco dejaras de ver esta transaccion
+          </ion-label>
+
+          <div *ngSwitchCase="71 || 101">
+            <ion-button color="secondary" *ngIf="createdCode" (click)="hideQR()">Ocultar QR</ion-button>
+            <ion-button color="secondary" *ngIf="!createdCode" (click)="showQR()">Mostrar QR</ion-button>
+            <ion-card *ngIf="createdCode">
+              <ngx-qrcode [qrc-value]="createdCode">
+              </ngx-qrcode>
+              <!-- <ion-card-content>
+                Value: {{ createdCode }}
+              </ion-card-content> -->
+            </ion-card>
+          </div>
+          <div *ngSwitchCase="81">
+            <ion-label>Fallo el Scan</ion-label>
+            <ion-button (click)="regenerateQR()">Regenerar QR</ion-button>
+          </div>
+          <div *ngSwitchCase="91">
+            <ion-label>Escaneo Exitoso</ion-label>
+            <ion-button (click)="updateState(31)">Confirmar Transaccion</ion-button>
+          </div>
+        </div>
+
+
+
+      </div>
+    </ng-template>
+  </ion-card-content>
+</ion-card>

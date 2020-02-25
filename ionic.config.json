@@ -1,0 +1,7 @@
+{
+  "name": "testIcons",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
