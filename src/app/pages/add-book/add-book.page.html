@@ -15,18 +15,19 @@
 </ion-header>
 
 
-<ion-content>
-  <div id="container">
-    <h1>Puedes agregar un libro cargando el código ISBN o manualmente</h1>
+<ion-content [fullscreen]="true" style="height: 100%">
+  <div class="ion-padding" id="container">
+    <ion-title class="ion-text-center">Puedes agregar un libro cargando el código ISBN <br> o de manera manual</ion-title>
+    <br>
     <ion-grid>
       <ion-row>
-        <ion-col class="ion-text-center">
-          <ion-button (click)="goToScan()">Leer código ISBN</ion-button>
+        <ion-col>
+          <ion-button size="block" color="primary" (click)="goToScan()">Leer código ISBN</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col class="ion-text-center">
-          <ion-button (click)="goToManual()">Carga Manual</ion-button>
+        <ion-col>
+          <ion-button size="block" color="secondary" (click)="goToManual()">Carga Manual</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

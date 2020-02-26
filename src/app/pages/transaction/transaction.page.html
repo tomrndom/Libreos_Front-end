@@ -15,31 +15,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div id="container">
-    <h3>Pedidos</h3>
-    <hr/>
-    <ion-list>
-      <ion-item *ngFor="let userTransaction of requestTransactions">
-        <app-item-transaction 
-        (emitEvent)="receiveEvent($event)"
-        [transaction]="userTransaction.transaction"
+<ion-content [fullscreen]="true">
+  <div class="ion-padding" id="container">
+    <ion-title>Mis solicitudes</ion-title>
+    <br>
+    <ion-list *ngFor="let userTransaction of requestTransactions">
+      <app-item-transaction (emitEvent)="receiveEvent($event)" [transaction]="userTransaction.transaction"
         [itsRequest]="true">
-
-        </app-item-transaction>
-      </ion-item>
+      </app-item-transaction>
     </ion-list>
 
-    <h3>Solicitados</h3>
-    <hr/>
-    <ion-list>
-      <ion-item *ngFor="let userTransaction of pendingTransactions">
-        <app-item-transaction 
-        (emitEvent)="receiveEvent($event)"
-        [transaction]="userTransaction.transaction"
+    <ion-title>Solicitudes de la comunidad</ion-title>
+    <br>
+    <ion-list *ngFor="let userTransaction of pendingTransactions">
+      <app-item-transaction (emitEvent)="receiveEvent($event)" [transaction]="userTransaction.transaction"
         [itsRequest]="false">
       </app-item-transaction>
-      </ion-item>
     </ion-list>
   </div>
 </ion-content>

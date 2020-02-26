@@ -26,7 +26,7 @@
 
   <br>
 
-  <div text-right>
+  <div class="ion-text-right">
     <ion-button (click)="viewDetailBook()">Ver libro</ion-button>
     <ion-button *ngIf="(!itsOwner && !book.available)" color="warning" (click)="finishBook()">Terminado</ion-button>
   </div>

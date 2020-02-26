@@ -1,4 +1,4 @@
-<ion-header translucent>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -15,33 +15,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div id="container">
+<ion-content [fullscreen]="true">
+  <div class="ion-padding" id="container">
 
-<div *ngIf="bookList.length === 0; then thenBlock else elseBlock"></div>
+    <div *ngIf="bookList.length === 0; then thenBlock else elseBlock"></div>
 
-<ng-template #thenBlock>
+    <ng-template #thenBlock>
 
-  <ion-list>
-    
-    <ion-item>
-      <ion-label>No tenés libros en tu biblioteca.</ion-label>
-    </ion-item>
+      <ion-list>
 
-  </ion-list>
+        <ion-item>
+          <ion-label>No tenés libros en tu biblioteca.</ion-label>
+        </ion-item>
 
-</ng-template>
+      </ion-list>
 
-<ng-template #elseBlock>
+    </ng-template>
 
-  <ion-list *ngFor="let book of bookList">
+    <ng-template #elseBlock>
 
-    <app-item-book [book]="book[0]" [itsOwner]=book[1]></app-item-book>
+      <ion-list *ngFor="let book of bookList">
 
-  </ion-list>
+        <app-item-book [book]="book[0]" [itsOwner]=book[1]></app-item-book>
 
-</ng-template>
+      </ion-list>
 
-<ion-button fill="outline" slot="end" (click)="goToAddBook()">Agregar</ion-button>
-</div>
+    </ng-template>
+
+    <ion-button fill="outline" size="block" (click)="goToAddBook()">Agregar</ion-button>
+  </div>
+
 </ion-content>
