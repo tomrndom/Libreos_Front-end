@@ -4,7 +4,7 @@
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
   
-      <ion-title>Cargar Libro</ion-title>
+      <ion-title>Cargar libro</ion-title>
   
       <ion-buttons slot="primary" (click)="goBack()">
         <ion-button>
@@ -18,44 +18,44 @@
   <div class="ion-padding" id="container">
     <form (ngSubmit)="newBook()">
       <ion-item>
-        <ion-label position="floating">Titulo<ion-text color="danger">*</ion-text>
+        <ion-label position="floating">Título <ion-text color="danger">*</ion-text>
         </ion-label>
         <ion-input type="text" [(ngModel)]="book.title" name="title" required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Autor<ion-text color="danger">*</ion-text>
+        <ion-label position="floating">Autor <ion-text color="danger">*</ion-text>
         </ion-label>
         <ion-input type="text" [(ngModel)]="book.authors" name="authors" required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">ISBN<ion-text color="danger">*</ion-text>
+        <ion-label position="floating">ISBN <ion-text color="danger">*</ion-text>
         </ion-label>
         <ion-input type="text" [(ngModel)]="book.isbn" name="isbn" required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Editorial</ion-label>
+        <ion-label position="floating">Editorial</ion-label>
         <ion-input type="text" [(ngModel)]="book.publisher" name="publisher"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Sinopsis</ion-label>
+        <ion-label position="floating">Sinopsis</ion-label>
         <ion-input type="text" [(ngModel)]="book.synopsys" name="synopsys"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Idioma</ion-label>
+        <ion-label position="floating">Idioma</ion-label>
         <ion-select [(ngModel)]="book.language" name="language" required>
           <ion-select-option value="español">Español</ion-select-option>
-          <ion-select-option value="ingles">Ingles</ion-select-option>
+          <ion-select-option value="ingles">Inglés</ion-select-option>
           <ion-select-option value="ingles">Italiano</ion-select-option>
-          <ion-select-option value="ingles">Frances</ion-select-option>
-          <ion-select-option value="ingles">Portuges</ion-select-option>
+          <ion-select-option value="ingles">Francés</ion-select-option>
+          <ion-select-option value="ingles">Portugués</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Cant de Paginas</ion-label>
+        <ion-label position="floating">Cantidad de Páginas</ion-label>
         <ion-input type="number" [(ngModel)]="book.pages" name="pages"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Estado<ion-text color="danger">*</ion-text>
+        <ion-label position="floating">Estado <ion-text color="danger">*</ion-text>
         </ion-label>
         <ion-select [(ngModel)]="bookCondition.conditionId" name="conditionId" required>
           <ion-select-option *ngFor="let condition of conditions" value={{condition.id}}>
@@ -63,18 +63,18 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Descripcion Personal</ion-label>
+        <ion-label position="floating">Descripción personal</ion-label>
         <ion-input type="text" [(ngModel)]="bookCondition.personalOpinion" name="personalOpinion"
-          placeholder="Excelente Estado en algunas partes Rayado.."></ion-input>
+          placeholder="Ej. Tiene escrita la tapa..."></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Genero</ion-label>
-        <ion-select placeholder="Elegir Genero" [(ngModel)]="book.genderId" name="genderId">
+        <ion-label position="floating">Género</ion-label>
+        <ion-select placeholder="Elegir Género" [(ngModel)]="book.genderId" name="genderId">
           <ion-select-option *ngFor="let gender of genders" value={{gender.id}}>
             {{gender.name}}</ion-select-option>`
         </ion-select>
       </ion-item>
-      <ion-button type="submit" expand="full">Cargar Libro</ion-button>
+      <ion-button type="submit" size="block" expand="full">Cargar libro</ion-button>
     </form>
   </div>
 </ion-content>

@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
-    <ion-title>Agregar Libro</ion-title>
+    <ion-title>Agregar libro</ion-title>
 
     <ion-buttons slot="primary" (click)="goBack()">
       <ion-button>
@@ -17,8 +17,7 @@
 
 <ion-content [fullscreen]="true" style="height: 100%">
   <div class="ion-padding" id="container">
-    <ion-title class="ion-text-center">Puedes agregar un libro cargando el código ISBN <br> o de manera manual</ion-title>
-    <br>
+    <p class="ion-text-center">Puedes agregar el código ISBN del libro o cargar sus datos manualmente</p>
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -27,7 +26,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-button size="block" color="secondary" (click)="goToManual()">Carga Manual</ion-button>
+          <ion-button size="block" color="secondary" (click)="goToManual()">Carga manual</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -4,8 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" [fullscreen]="true" padding scroll-y="false">
-  <ion-slides>
+<ion-content class="ion-padding" [fullscreen]="true" scroll-y="false">
+  <ion-slides style="height: 100%;">
     <ion-slide>
       <img class="start-guide__img" src="assets/img/libreos_logo.jpeg" />
       <ion-title>Dona un libro</ion-title>
@@ -37,6 +37,7 @@
     <ion-slide>
       <img class="start-guide__img" src="assets/img/libreos_logo.jpeg" />
       <ion-title>¿Listo/a para empezar?</ion-title>
+      <br>
       <ion-button (click)="goToHome()">COMENZAR</ion-button>
     </ion-slide>
 

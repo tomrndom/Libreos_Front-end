@@ -18,7 +18,7 @@
 <ion-content [fullscreen]="true">
   <div id="container">
     <ion-card>
-      <ion-card-header text-center>
+      <ion-card-header class="ion-text-center">
         <img src="{{book.image}}" />
         <ion-card-subtitle>{{book.authors}}</ion-card-subtitle>
         <ion-card-title>{{book.title}}</ion-card-title>
@@ -64,53 +64,13 @@
 
         <br>
 
-        <div>
-          <div *ngIf="book.itsOwner" text-right>
+        <div class="ion-text-right">
+          <div *ngIf="book.itsOwner">
             <ion-button color="danger" (click)="deleteBook()">Eliminar</ion-button>
             <ion-button color="secondary" (click)="editBook()">Editar</ion-button>
           </div>
-
-          <ion-item-group>
-            <ion-item-divider>
-              <ion-label>Ficha técnica</ion-label>
-            </ion-item-divider>
-
-            <ion-item>
-              <ion-label>Editorial: {{book.publisher}}</ion-label>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Año: {{book.publishDate }}</ion-label>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Lenguaje: {{book.language}}</ion-label>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Páginas: {{book.pages}}</ion-label>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Condición: {{book.bookConditions.personalOpinion}}</ion-label>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>{{book.bookConditions.condition.description}}</ion-label>
-            </ion-item>
-
-          </ion-item-group>
-
-          <br>
-
-          <div class="ion-text-right">
-            <div *ngIf="book.itsOwner">
-              <ion-button color="danger" (click)="deleteBook()">Eliminar</ion-button>
-              <ion-button color="secondary" (click)="editBook()">Editar</ion-button>
-            </div>
-            <div *ngIf="!book.itsOwner">
-              <ion-button color="success" (click)="requestBook()">Solicitar</ion-button>
-            </div>
+          <div *ngIf="!book.itsOwner">
+            <ion-button color="success" (click)="requestBook()">Solicitar</ion-button>
           </div>
         </div>
       </ion-card-content>

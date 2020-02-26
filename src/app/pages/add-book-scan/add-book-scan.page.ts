@@ -38,7 +38,7 @@ export class AddBookScanPage implements OnInit {
             this.dataService.setData(0, data);
             this.navCtrl.navigateForward(`add-book-manual/0`)            
           }else{
-            this.message = "No se Encontro Libro REVISE ISBN O pruebe cargando manualmente";
+            this.message = "No se encontró el libro. Revisá el ISBN o probá cargando manualmente";
           }
         }
       ), (err) => {
@@ -47,13 +47,13 @@ export class AddBookScanPage implements OnInit {
       }
      }).catch(err => {
         console.log(err);
-        this.message = "No se Encontro Libro REVISE ISBN O pruebe cargando manualmente";
+        this.message = "No se encontró el libro. Revisá el ISBN o probá cargando manualmente";
      });
   }
 
   onEnter() {
     if (!this.isbn.length) {
-      this.message = "Ingrese Nro de ISBN"
+      this.message = "Ingresá el ISBN del libro"
       this.book = {}
     } else {
   
@@ -69,7 +69,7 @@ export class AddBookScanPage implements OnInit {
             this.navCtrl.navigateForward(`add-book-manual/0`)
             
           }else{
-            this.message = "No se Encontro Libro REVISE ISBN O pruebe cargando manualmente"
+            this.message = "No se encontró el libro. Revisá el ISBN o probá cargando manualmente";
           }
         }
       )
