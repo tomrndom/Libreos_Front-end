@@ -1,6 +1,7 @@
 /* tslint:disable */
 import {
-  Transaction
+  Transaction,
+  AppUser
 } from '../index';
 
 declare var Object: any;
@@ -13,6 +14,8 @@ export interface UserTransactionInterface {
   "updatedAt"?: Date;
   "deletedAt"?: Date;
   transaction?: Transaction;
+  fromUser?: AppUser;
+  toUser?: AppUser;
 }
 
 export class UserTransaction implements UserTransactionInterface {
@@ -24,6 +27,8 @@ export class UserTransaction implements UserTransactionInterface {
   "updatedAt"?: Date;
   "deletedAt"?: Date;
   transaction?: Transaction;
+  fromUser?: AppUser;
+  toUser?: AppUser;
   constructor(data?: UserTransactionInterface) {
     Object.assign(this, data);
   }
@@ -93,6 +98,22 @@ export class UserTransaction implements UserTransactionInterface {
           model: 'Transaction',
           relationType: 'belongsTo',
                   keyFrom: 'transactionId',
+          keyTo: 'id'
+        },
+        fromUser: {
+          name: 'fromUser',
+          type: 'AppUser',
+          model: 'AppUser',
+          relationType: 'hasOne',
+                  keyFrom: 'id',
+          keyTo: 'id'
+        },
+        toUser: {
+          name: 'toUser',
+          type: 'AppUser',
+          model: 'AppUser',
+          relationType: 'hasOne',
+                  keyFrom: 'id',
           keyTo: 'id'
         },
       }

@@ -81,7 +81,7 @@ export class AppUserService {
   getUserBooks(id) {
     let filter = {
       "where": {
-
+        "onHand":"1"
       },
       "include": { 'book': ['gender' ,{'bookConditions':'condition'} ] }
     }

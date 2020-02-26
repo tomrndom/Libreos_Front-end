@@ -52,7 +52,6 @@ export class AddBookScanPage implements OnInit {
   }
 
   onEnter() {
-
     if (!this.isbn.length) {
       this.message = "Ingrese Nro de ISBN"
       this.book = {}

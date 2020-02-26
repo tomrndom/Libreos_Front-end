@@ -10,26 +10,34 @@ export class UserBookService {
 
   constructor(private userBookApi: UserBookApi) { }
 
-  getAll(filtro: any = {deleted_at: null}):Observable<UserBook[]>{
-    if (filtro) filtro = {...filtro,deleted_at: null}
+  getAll(filtro: any = { deleted_at: null }): Observable<UserBook[]> {
+    if (filtro) filtro = { ...filtro, deleted_at: null }
     return this.userBookApi.find(filtro);
   }
 
-  getById(id: number): Observable<UserBook>{
+  getById(id: number): Observable<UserBook> {
     return this.userBookApi.findById(id);
   }
 
-  create(userBook: UserBook): Observable<UserBook>{
+  create(userBook: UserBook): Observable<UserBook> {
     return this.userBookApi.create(userBook);
   }
 
-  update(userBook: UserBook): Observable<UserBook>{
+  update(userBook: UserBook): Observable<UserBook> {
     return this.userBookApi.patchAttributes(userBook.id, userBook);
   }
 
-  delete(id: number): Observable<UserBook>{
+  updateWhere(filter: any, data: any): Observable<any> {
+    return this.userBookApi.updateAll(filter, data)
+  }
+  findBy(filter: any): Observable<any> {
+    return this.userBookApi.findOne(filter)
+  }
+
+
+  delete(id: number): Observable<UserBook> {
     let userBook: UserBook;
     userBook.deletedAt = new Date();
-    return this.userBookApi.patchAttributes(id,userBook);
+    return this.userBookApi.patchAttributes(id, userBook);
   }
 }

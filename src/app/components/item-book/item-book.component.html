@@ -8,17 +8,17 @@
     <p *ngIf="book.synopsys"> {{book.synopsys}} </p>
     <p *ngIf="!book.synopsys"> Este libro no posee descripción.</p>
 
-    <ion-chip *ngIf="(!itsOwner && book.available)" color="success">
+    <ion-chip *ngIf="(book.available)" color="success">
       <ion-label>Disponible</ion-label>
     </ion-chip>
 
-    <ion-chip *ngIf="(itsOwner && !book.available)" color="danger">
+    <ion-chip *ngIf="(!book.available)" color="danger">
       <ion-label>No disponible</ion-label>
     </ion-chip>
 
-    <div *ngIf="(!itsOwner && !book.available)">
+    <div *ngIf="(book.reading)">
       <ion-chip color="warning">
-        <ion-label>Leyendo</ion-label>
+        <ion-label>Leyendo </ion-label>
       </ion-chip>
     </div>
 
@@ -28,6 +28,6 @@
 
   <div class="ion-text-right">
     <ion-button (click)="viewDetailBook()">Ver libro</ion-button>
-    <ion-button *ngIf="(!itsOwner && !book.available)" color="warning" (click)="finishBook()">Terminado</ion-button>
+    <ion-button *ngIf="(book.reading)" color="warning" (click)="finishBook()">Terminar de Leer</ion-button>
   </div>
 </ion-item>

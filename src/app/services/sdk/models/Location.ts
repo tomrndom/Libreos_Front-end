@@ -1,6 +1,7 @@
 /* tslint:disable */
 import {
-  City
+  City,
+  AppUser
 } from '../index';
 
 declare var Object: any;
@@ -14,6 +15,7 @@ export interface LocationInterface {
   "updatedAt"?: Date;
   "deletedAt"?: Date;
   city?: City;
+  user?: AppUser;
 }
 
 export class Location implements LocationInterface {
@@ -26,6 +28,7 @@ export class Location implements LocationInterface {
   "updatedAt"?: Date;
   "deletedAt"?: Date;
   city?: City;
+  user?: AppUser;
   constructor(data?: LocationInterface) {
     Object.assign(this, data);
   }
@@ -99,6 +102,14 @@ export class Location implements LocationInterface {
           model: 'City',
           relationType: 'belongsTo',
                   keyFrom: 'cityCp',
+          keyTo: 'id'
+        },
+        user: {
+          name: 'user',
+          type: 'AppUser',
+          model: 'AppUser',
+          relationType: 'belongsTo',
+                  keyFrom: 'userId',
           keyTo: 'id'
         },
       }

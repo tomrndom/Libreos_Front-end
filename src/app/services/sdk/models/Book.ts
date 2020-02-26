@@ -19,6 +19,7 @@ export interface BookInterface {
   "genderId": number;
   "publishDate"?: Date;
   "available": number;
+  "reading"?: number;
   "image"?: string;
   "createdAt"?: Date;
   "updatedAt"?: Date;
@@ -41,6 +42,7 @@ export class Book implements BookInterface {
   "genderId": number;
   "publishDate"?: Date;
   "available": number;
+  "reading"?: number;
   "image"?: string;
   "createdAt"?: Date;
   "updatedAt"?: Date;
@@ -124,6 +126,10 @@ export class Book implements BookInterface {
         },
         "available": {
           name: 'available',
+          type: 'number'
+        },
+        "reading": {
+          name: 'reading',
           type: 'number'
         },
         "image": {

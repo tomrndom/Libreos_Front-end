@@ -19,12 +19,12 @@ export class SearchBookPage implements OnInit {
   message = ""
   range: number;
   bookList: any[] = []
-  
+
   constructor(
     private _bookService: BookService,
     private _locationService: LocationService,
     private dataService: DataService,
-    private navCtrl:NavController,
+    private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private storage: Storage
   ) { }
@@ -43,21 +43,36 @@ export class SearchBookPage implements OnInit {
 
     let filter: LoopBackFilter = {
       "where": {
-        "and":[
-          {"cityCP": 5500},
-          {"userId": {"neq": this.userId}},
+        "and": [
+          { "cityCP": 5500 },
+          { "userId": { "neq": this.userId } },
         ]
       },
-      "include":[{"relation": "user" ,"scope": {"include":{"relation": "userBooks", "scope": {"include": {"relation":"book"}}}}}]
+      "include": [{
+        "relation": "user", "scope": {
+          "include": {
+            "relation": "userBooks",
+            "scope": {
+              "where": { "onHand": "1" },
+              "include": { "relation": "book", "scope": { "where": { "available": "1" } } }
+            }
+          }
+        }
+      }]
     }
-    this._locationService.getAll(filter).subscribe((res:any) => {      
+
+
+    this._locationService.getAll(filter).subscribe((res: any) => {
+      console.log('RESPUESTA', res)
       res.map(i => {
         i.user.userBooks.map(book => {
-          this.bookList.push(book.book);
-        }); 
+          if (book.book) {
+            this.bookList.push(book.book);
+          }
+        });
       });
       if (this.bookList.length === 0) this.message = "No se encontraron resultados";
-      loading.dismiss();      
+      loading.dismiss();
     });
   }
 
@@ -83,7 +98,7 @@ export class SearchBookPage implements OnInit {
         },
         "include": [
           { "relation": "userBooks", "scope": { "where": { userId: { neq: `${this.userId}` } } } },
-            ['gender' ,{'bookConditions':'condition'} ]
+          ['gender', { 'bookConditions': 'condition' }]
         ]
       }
 
@@ -115,7 +130,7 @@ export class SearchBookPage implements OnInit {
     }
   }
 
-  goBack(){
+  goBack() {
     this.navCtrl.back()
   }
 }

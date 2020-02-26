@@ -36,6 +36,7 @@ export class AddBookManualPage implements OnInit {
     "language": '',
     "authors": '',
     "synopsys": '',
+    "reading":0,
     "pages": 0,
     "genderId": 0,
     "image": 'https://image.shutterstock.com/image-vector/no-image-available-sign-internet-600w-261719003.jpg',
@@ -50,7 +51,7 @@ export class AddBookManualPage implements OnInit {
     private _bookService: BookService,
     private _bookConditionService: BookConditionService,
     private _userBookService: UserBookService,
-    private _alertService:MessageService,
+    private _alertService: MessageService,
     private storage: Storage
   ) {
     storage.get('user').then((val) => {
@@ -61,9 +62,9 @@ export class AddBookManualPage implements OnInit {
       let getBook = this.route.snapshot.data['special'];
       this.book.title = getBook.title
       this.book.image = getBook.image
-      this.book.isbn = getBook.isbn13? getBook.isbn13 : getBook.isbn
+      this.book.isbn = getBook.isbn13 ? getBook.isbn13 : getBook.isbn
       this.book.authors = getBook.authors.toString()
-      this.book.synopsys = getBook.synopsys? getBook.synopsys : ''
+      this.book.synopsys = getBook.synopsys ? getBook.synopsys : ''
       this.book.publisher = getBook.publisher
       this.book.pages = getBook.pages
 
@@ -96,11 +97,12 @@ export class AddBookManualPage implements OnInit {
         let userBook: UserBook = {
           "id": 0,
           "isOwner": 1,
+          "onHand": 1,
           "bookId": res['id'],
           "userId": this.userId
         }
         this._userBookService.create(userBook).subscribe(
-          (res) =>{
+          (res) => {
             console.log(res)
             this.navCtrl.navigateForward('library')
             console.log('Redirect_')

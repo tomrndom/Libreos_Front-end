@@ -24,13 +24,7 @@ export class LibraryPage implements OnInit {
   ngOnInit() {
     this.storage.get('user').then((val) => {
       this.userId = JSON.parse(val).id
-      this._userService.getUserBooks(this.userId).subscribe(
-        res => {
-          this.bookList = res
-        },
-        err => {
-
-        });
+      this.getBooks(this.userId)
     });
 
   }
@@ -39,5 +33,20 @@ export class LibraryPage implements OnInit {
   }
   goToAddBook() {
     this.navCtrl.navigateForward('add-book');
+  }
+
+  getBooks(id) {
+    this._userService.getUserBooks(id).subscribe(
+      res => {
+        this.bookList = res
+      },
+      err => {
+
+      });
+  }
+
+  updateItem($event) {
+    console.log('EVENTO', $event)
+    this.getBooks(this.userId)
   }
 }

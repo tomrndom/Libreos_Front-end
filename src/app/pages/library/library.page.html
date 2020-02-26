@@ -36,7 +36,7 @@
 
       <ion-list *ngFor="let book of bookList">
 
-        <app-item-book [book]="book[0]" [itsOwner]=book[1]></app-item-book>
+        <app-item-book [book]="book[0]" [itsOwner]=book[1] (emitEvent)="updateItem()"></app-item-book>
 
       </ion-list>
 

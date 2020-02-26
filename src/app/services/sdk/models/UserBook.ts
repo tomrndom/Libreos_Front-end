@@ -1,5 +1,6 @@
 /* tslint:disable */
 import {
+  AppUser,
   Book
 } from '../index';
 
@@ -7,22 +8,26 @@ declare var Object: any;
 export interface UserBookInterface {
   "id": number;
   "isOwner": number;
+  "onHand": number;
   "userId": number;
   "bookId": number;
   "createdAt"?: Date;
   "updatedAt"?: Date;
   "deletedAt"?: Date;
+  user?: AppUser;
   book?: Book;
 }
 
 export class UserBook implements UserBookInterface {
   "id": number;
   "isOwner": number;
+  "onHand": number;
   "userId": number;
   "bookId": number;
   "createdAt"?: Date;
   "updatedAt"?: Date;
   "deletedAt"?: Date;
+  user?: AppUser;
   book?: Book;
   constructor(data?: UserBookInterface) {
     Object.assign(this, data);
@@ -65,6 +70,10 @@ export class UserBook implements UserBookInterface {
           name: 'isOwner',
           type: 'number'
         },
+        "onHand": {
+          name: 'onHand',
+          type: 'number'
+        },
         "userId": {
           name: 'userId',
           type: 'number'
@@ -87,6 +96,14 @@ export class UserBook implements UserBookInterface {
         },
       },
       relations: {
+        user: {
+          name: 'user',
+          type: 'AppUser',
+          model: 'AppUser',
+          relationType: 'belongsTo',
+                  keyFrom: 'userId',
+          keyTo: 'id'
+        },
         book: {
           name: 'book',
           type: 'Book',
