@@ -1,30 +1,37 @@
-<ion-item>
-  <ion-avatar slot="start">
-    <img src="{{transaction.book.image}}">
-  </ion-avatar>
-  <ion-label>
-    <h3>{{transaction.book.title}}</h3>
-    <p>{{transaction.book.authors}}</p>
-    <p *ngIf="transaction.book.synopsys"> {{transaction.book.synopsys}} </p>
-    <p *ngIf="!transaction.book.synopsys"> Este libro no posee descripción.</p>
-  </ion-label>
+<ion-card>
+  <img src="{{transaction.book.image}}">
+  <ion-card-header>
+    <ion-card-title>{{transaction.book.title}}</ion-card-title>
+    <ion-card-subtitle>
+      <p>{{transaction.book.authors}}</p>
+      <p>
+        {{  transaction.book.synopsys ? 
+          transaction.book.synopsys.length > 100 ? 
+            (transaction.book.synopsys | slice:0:100) + (transaction.book.synopsys.length > 100 ? '...' : '') : 
+          (transaction.book.synopsys + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+        : 'Este libro no posee descripción.'}} </p>
+    </ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
 
-  <ion-content>
     <div *ngIf="itsRequest else noRequest">
       <ion-label>Solicitaste el libro</ion-label>
       <div [ngSwitch]="transaction.transactionStates.id">
 
-        <ion-label *ngSwitchCase="1">
+        <div *ngSwitchCase="1">
           <!-- Pending-->
-          Solicitud pendiente de aprobación
+          <p>Solicitud pendiente de aprobación</p>
           <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
-        </ion-label>
+        </div>
 
         <div *ngSwitchCase="11">
           <!-- Allowed-->
-          ¡Solicitud aceptada!
-          <ion-button color="secondary" (click)="getContactDetail()">Mostrar datos del dueño</ion-button>
+          <p>¡Solicitud aceptada!</p>
+          <div *ngIf="!contact">
+            <ion-button color="secondary" (click)="getContactDetail()">Mostrar Datos</ion-button>
+          </div>
           <div *ngIf="contact">
+            <ion-button color="secondary" (click)="hideContactDetail()">Ocultar Datos</ion-button>
             <p>{{contact.firstname}}-{{contact.lastname}}</p>
             <p>{{contact.email}}</p>
             <p>{{contact.phone}}</p>
@@ -34,38 +41,50 @@
 
         <div *ngSwitchCase="21">
           <!--Deny-->
-          <ion-label *ngSwitchCase="21">
-            <!--Deny-->
+          <p>
             Solicitud denegada por el dueño del libro.
-          </ion-label>
+          </p>
           <ion-button color="secondary" (click)="cancelTransaction(41)">Eliminar</ion-button>
         </div>
 
-        <ion-label *ngSwitchCase="31">
+        <div *ngSwitchCase="31">
           <!--Complete Dejar de mostrar y mostrar en Mis libros-->
-          ¡Transacción exitosa!
-        </ion-label>
+          <ion-label>
+            ¡Transacción exitosa!
+          </ion-label>
+        </div>
 
         <div *ngSwitchCase="41">
           <ion-label>Transaccion anulada</ion-label>
         </div>
 
-        <ion-label *ngSwitchCase="51">
-          Ocurrió un error.
-        </ion-label>
+        <div *ngSwitchCase="51">
+          <ion-label>
+            Ocurrió un error.
+          </ion-label>
+        </div>
 
-        <ion-label *ngSwitchCase="61">
-          La transacción llegó a su tiempo máximo de espera y ha sido cancelada.
-        </ion-label>
+        <div *ngSwitchCase="61">
+          <ion-label>
+            La transacción llegó a su tiempo máximo de espera y ha sido cancelada.
+          </ion-label>
+        </div>
 
         <div *ngSwitchCase="71 || 101">
           <ion-button color="secondary" (click)="scanQR()">Escanear QR</ion-button>
         </div>
 
+        <div *ngSwitchCase="81">
+          <ion-label>Fallo el Scan</ion-label>
+          <p>Debes esperar que el Dueño Genere un nuevo QR</p>
+        </div>
+        <div *ngSwitchCase="91">
+          <ion-label>Escaneo Exitoso</ion-label>
+          <p>El dueño debe confimar la transaccion para Completar!</p>>
+        </div>
+
       </div>
-
     </div>
-
     <ng-template #noRequest>
       <div [ngSwitch]="transaction.transactionStates.id">
         <div *ngSwitchCase="1">
@@ -75,48 +94,58 @@
         </div>
         <div *ngSwitchCase="11">
           <!-- Allowed-->
-          <ion-label>
+          <p>
             Se enviaron tus datos de contacto al Solicitante
-            <br>
-            <ion-button color="secondary" (click)="getContactDetail()">Mostrar Datos de solicitante</ion-button>
-            <br>
-            <div *ngIf="contact">
-              <p>{{contact.firstname}}-{{contact.lastname}}</p>
-              <p>{{contact.email}}</p>
-              <p>{{contact.phone}}</p>
-            </div>
-          </ion-label>
-          <ion-label>Si la transaccion no se completa <br>luego de generar el QR. QUEDARA CANCELADA</ion-label>
+          </p>
+          <div *ngIf="!contact">
+            <ion-button color="secondary" (click)="getContactDetail()">Mostrar Datos</ion-button>
+          </div>
+          <div *ngIf="contact">
+            <ion-button color="secondary" (click)="hideContactDetail()">Ocultar Datos</ion-button>
+            <p>{{contact.firstname}}-{{contact.lastname}}</p>
+            <p>{{contact.email}}</p>
+            <p>{{contact.phone}}</p>
+          </div>
           <ion-button color="secondary" (click)="updateState(71)">Generar QR</ion-button>
-          <ion-label>Cancelar en Este Punto Te Penalizara!!</ion-label>
-          <ion-button color="secondary" (click)="cancelTransaction(41)">Denegar</ion-button>
+          <p>Cancelar en Este Punto Te Penalizara!!</p>
+          <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
         </div>
 
-        <ion-label *ngSwitchCase="21">
+        <div *ngSwitchCase="21">
           <!-- Deny-->
           Denegaste la Transaccion,<br> El libro esta disponible para ser solicitado por alguien mas
           <br>
           <ion-button color="secondary" (click)="updateState(1)">Reanudar</ion-button>
           <br>
           <ion-button color="secondary" (click)="cancelTransaction(41)">Cancelar</ion-button>
-        </ion-label>
-        <ion-label *ngSwitchCase="31">
+        </div>
+        <div *ngSwitchCase="31">
           <!--Complete Dejar de mostrar y mostrar en Mis libros-->
-          Transaccion Completada con extio el Dia DD//MM//YY
-        </ion-label>
-        <ion-label *ngSwitchCase="41">
-          Transaccion Cancelada! No hay vuelta atras
-          En unos Dias desaparecera de la vista
-        </ion-label>
-        <ion-label *ngSwitchCase="51">
+          <ion-label>
+            Transaccion Completada con extio
+          </ion-label>
+        </div>
+        <div *ngSwitchCase="41">
+          <p>
+            Transaccion Cancelada! No hay vuelta atras
+          </p>
+          <p>
+            En unos Dias desaparecera de la vista
+          </p>
+        </div>
+        <div *ngSwitchCase="51">
           Por algun motivo la transaccion Fallo
           por favore Comunicarse con algun moderador
-        </ion-label>
-        <ion-label *ngSwitchCase="61">
-          Se acabo el Tiempo de Espera de la Transaccion
-          La transaccion a sido cancelada
-          Dentro de Poco dejaras de ver esta transaccion
-        </ion-label>
+        </div>
+        <div *ngSwitchCase="61">
+          <p>
+            Se acabo el Tiempo de Espera de la Transaccion
+            La transaccion a sido cancelada
+          </p>
+          <p>
+            Dentro de Poco dejaras de ver esta transaccion
+          </p>
+        </div>
 
         <div *ngSwitchCase="71 || 101">
           <ion-button color="secondary" *ngIf="createdCode" (click)="hideQR()">Ocultar QR</ion-button>
@@ -139,14 +168,10 @@
         </div>
       </div>
     </ng-template>
-  </ion-content>
 
-  <br>
+    <div class="ion-text-right">
+      <ion-button (click)="viewDetailBook()">Ver libro</ion-button>
+    </div>
 
-  <div class="ion-text-right">
-    <ion-button (click)="viewDetailBook()">Ver libro</ion-button>
-  </div>
-
-
-
-</ion-item>
+  </ion-card-content>
+</ion-card>

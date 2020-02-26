@@ -265,4 +265,8 @@ export class ItemTransactionComponent implements OnInit {
       }
     )
   }
+  hideContactDetail(){
+    this.contact = null 
+  }
+
 }
