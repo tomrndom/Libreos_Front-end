@@ -205,12 +205,12 @@ export class ItemTransactionComponent implements OnInit {
               if (res.transactionStateId === 91) {
                 this._alertService.presentMessage('Escaneo Exitoso', 'Ahora Debes compeltar la Transaccion',
 
-                  () => this.navCtrl.navigateForward('transaction')
+                  () => this.emitEvent.emit(this.itsRequest)
                 )
               } else if (res.transactionStateId === 81) {
                 this._alertService.presentMessage('Escaneo Fallido', 'Debes Regenerar el QR',
 
-                  () => this.navCtrl.navigateForward('transaction')
+                  () => this.emitEvent.emit(this.itsRequest)
                 )
               }
             }

@@ -63,31 +63,53 @@ export class DetailBookPage implements OnInit {
           bookId: this.book.id,
           transactionStateId: 1
         }
-        this._transactionService.create(transaction).subscribe(
-          res => {
-            console.log("Transaction", res);
-            this.book.available = 0;
-            this._bookService.update(this.book).subscribe(
-              res => {
-                console.log('Book', res)
-              })
-            let userTransaction: UserTransaction = {
-              id: 0,
-              fromUserId: this.user.id,
-              toUserId: this.book.userBooks[0].userId,
-              transactionId: res.id
-            }
-            this._userTransactionService.create(userTransaction).subscribe(
-              res => {
-                console.log(res)
-                this._alertService.presentMessage('Libro Solicitado', 'Podras ver El estado de Tu Solicitud en Solicitudes')
-              }
-            )
+        // Get the user who have the book
+        let filter = {
+          "where": {
+            "id": this.book.id
           },
-          err => {
-            this._alertService.presentAlert(err)
-            console.log(err);
-          })
+          "include": [
+            { "relation": "userBooks", "scope": { "where": { "onHand": "1" } } }
+          ]
+        }
+        this._bookService.getAllBooks(filter).subscribe(
+          (res: any) => {
+            console.log('RESPUESTA!', res[0])
+            res.map(book => {
+              book.userBooks.map(userBook => {
+                console.log(userBook)
+                this._transactionService.create(transaction).subscribe(
+                  res => {
+                    console.log("Transaction", res);
+                    let updated = this.book
+                    updated.available = 0;
+                    this._bookService.update(updated).subscribe(
+                      res => {
+                        console.log('Book', res)
+                      })
+                    let userTransaction: UserTransaction = {
+                      id: 0,
+                      fromUserId: this.user.id,
+                      toUserId: userBook.userId,
+                      transactionId: res.id
+                    }
+                    this._userTransactionService.create(userTransaction).subscribe(
+                      res => {
+                        console.log(res)
+                        this._alertService.presentMessage('Libro Solicitado', 'Podras ver El estado de Tu Solicitud en Solicitudes')
+                      }
+                    )
+                  },
+                  err => {
+                    this._alertService.presentAlert(err)
+                    console.log(err);
+                  })
+
+              })
+            })
+          }
+        )
+
       } else {
         console.log('Solicitud Cancelada')
       }

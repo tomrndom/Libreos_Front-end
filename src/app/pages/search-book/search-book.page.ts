@@ -54,7 +54,16 @@ export class SearchBookPage implements OnInit {
             "relation": "userBooks",
             "scope": {
               "where": { "onHand": "1" },
-              "include": { "relation": "book", "scope": { "where": { "available": "1" } } }
+              "include": {
+                "relation": "book",
+                "scope": {
+                  "where": { "available": "1" },
+                  "include":[
+                    { "relation": "userBooks", "scope": { "where": { "onHand": "1" } } },
+                    ['gender', { 'bookConditions': 'condition' }]
+                  ]
+                }
+              }
             }
           }
         }
