@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { BookService } from 'src/app/services/api/book.service';
-import { UserBookService } from 'src/app/services/api/user-book.service';
 import { map } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
+import { LoopBackFilter } from 'src/app/services/sdk';
+import { LocationService } from 'src/app/services/api/location.service';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-search-book',
@@ -19,7 +22,10 @@ export class SearchBookPage implements OnInit {
   
   constructor(
     private _bookService: BookService,
+    private _locationService: LocationService,
+    private dataService: DataService,
     private navCtrl:NavController,
+    private loadingCtrl: LoadingController,
     private storage: Storage
   ) { }
 
@@ -29,8 +35,30 @@ export class SearchBookPage implements OnInit {
     })
   }
 
-  searchBooks(range: number) {
-    console.log('looking books in ', range, ' kms');
+  async searchBooks(postalCode: number) {
+    const loading = await this.loadingCtrl.create({
+      message: 'Buscando...',
+    });
+    await loading.present();
+
+    let filter: LoopBackFilter = {
+      "where": {
+        "and":[
+          {"cityCP": 5500},
+          {"userId": {"neq": this.userId}},
+        ]
+      },
+      "include":[{"relation": "user" ,"scope": {"include":{"relation": "userBooks", "scope": {"include": {"relation":"book"}}}}}]
+    }
+    this._locationService.getAll(filter).subscribe((res:any) => {      
+      res.map(i => {
+        i.user.userBooks.map(book => {
+          this.bookList.push(book.book);
+        }); 
+      });
+      if (this.bookList.length === 0) this.message = "No se encontraron resultados";
+      loading.dismiss();      
+    });
   }
 
   onEnter() {

@@ -28,7 +28,8 @@ const routes: Routes = [
   { path: 'profile-edit', loadChildren: './pages/profile-edit/profile-edit.module#ProfileEditPageModule' },
   { path: 'transaction', loadChildren: './pages/transaction/transaction.module#TransactionPageModule' },
   { path: 'sign-up', loadChildren: './pages/sign-up/sign-up.module#SignUpPageModule' },
-  { path: 'start-guide', loadChildren: './pages/start-guide/start-guide.module#StartGuidePageModule' }
+  { path: 'start-guide', loadChildren: './pages/start-guide/start-guide.module#StartGuidePageModule' },  
+
 ];
 
 @NgModule({

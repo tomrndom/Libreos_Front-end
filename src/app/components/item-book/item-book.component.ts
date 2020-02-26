@@ -24,7 +24,7 @@ export class ItemBookComponent implements OnInit {
               public navCtrl:NavController) { }
 
   ngOnInit() {
-    console.log(this.book)
+    console.log(this.book, this.itsOwner);
   }
 
   redirecToAddBook(){
