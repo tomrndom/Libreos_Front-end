@@ -114,6 +114,7 @@ export class ItemTransactionComponent implements OnInit {
                     this._userBookService.update(updated).subscribe(res => {
                       console.log('User Book Updated', res)
                       let book = this.transaction.book
+                      book.available = 0
                       book.reading = 1
                       this._bookService.update(book).subscribe(res => {
                         console.log('Book is Reading', res)
