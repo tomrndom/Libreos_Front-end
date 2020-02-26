@@ -9,6 +9,8 @@ import { UserTransactionService } from 'src/app/services/api/user-transaction.se
 import { AppUserService } from 'src/app/services/api/app-user.service';
 import { UserBook } from 'src/app/services/sdk';
 import { UserBookService } from 'src/app/services/api/user-book.service';
+import { Subscription, interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-item-transaction',
@@ -188,36 +190,36 @@ export class ItemTransactionComponent implements OnInit {
 
   showQR() {
     this.createdCode = this.transaction.tokenQr;
-    this.checkForScannQr()
+    this.checkForScannQr();
 
   }
 
   checkForScannQr() {
-    setTimeout(
-      () => {
-        console.log('Check every 5 second')
-        this._transactionService.getById(this.transaction.id).subscribe(
-          res => {
-            console.log('Check if Value Change')
-            if (res.transactionStateId === this.transaction.transactionStateId) {
-              this.checkForScannQr();
-            } else {
-              if (res.transactionStateId === 91) {
-                this._alertService.presentMessage('Escaneo Exitoso', 'Ahora Debes compeltar la Transaccion',
+    let checkQR: Subscription;
 
-                  () => this.emitEvent.emit(this.itsRequest)
-                )
-              } else if (res.transactionStateId === 81) {
-                this._alertService.presentMessage('Escaneo Fallido', 'Debes Regenerar el QR',
+    const interval$ = interval(5000);
+    const transactionCheck$ = this._transactionService.getById(this.transaction.id);
 
-                  () => this.emitEvent.emit(this.itsRequest)
-                )
-              }
+    checkQR = interval$.pipe(
+      switchMap(() => transactionCheck$)
+    ).subscribe((res) => {
+      console.log('Check if Value Change')
+        if (res.transactionStateId === 91) {
+          this._alertService.presentMessage('Escaneo Exitoso', 'Ahora Debes compeltar la Transaccion',
+            () => {
+              this.emitEvent.emit(this.itsRequest)
+              checkQR.unsubscribe();
             }
-          }
-        )
-      }, 5000)
-
+          )
+        } else if (res.transactionStateId === 81) {
+          this._alertService.presentMessage('Escaneo Fallido', 'Debes Regenerar el QR',
+            () => {
+              this.emitEvent.emit(this.itsRequest)
+              checkQR.unsubscribe();
+            }
+          )
+        }
+    });
   }
 
   hideQR() {
@@ -265,8 +267,8 @@ export class ItemTransactionComponent implements OnInit {
       }
     )
   }
-  hideContactDetail(){
-    this.contact = null 
+  hideContactDetail() {
+    this.contact = null
   }
 
 }
