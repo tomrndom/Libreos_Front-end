@@ -21,10 +21,10 @@
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-center">
-          <h1>Buscar libros cercanos</h1>
+          <h1>Buscar libros cercanos a tu ubicación</h1>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <!-- <ion-row>
         <ion-col>
           <ion-item lines="none">
             <ion-label position="stacked">Rango de la búsqueda (km)</ion-label>
@@ -33,7 +33,7 @@
             <ion-range min="0" max="50" step="10" pin="true" snaps="true" color="primary" [(ngModel)]="range"></ion-range>            
           </ion-item>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
       <ion-row>
         <ion-col class="ion-text-center">
           <ion-button class="center" color="primary" (click)="searchBooks(range)">Buscar libros</ion-button>
@@ -42,10 +42,10 @@
 
       <ion-row> 
           <ion-item *ngIf="message">
-              <ion-label>{{message}}</ion-label>
+            <ion-label>{{message}}</ion-label>
           </ion-item>
         <ion-item *ngFor="let book of bookList">
-            <app-item-book [book]="book"></app-item-book>
+          <app-item-book [book]="book"></app-item-book>
         </ion-item>
       </ion-row>
     </ion-grid>

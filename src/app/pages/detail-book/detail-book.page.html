@@ -8,7 +8,7 @@
 
     <ion-buttons slot="primary" (click)="goBack()">
       <ion-button>
-        <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -23,7 +23,7 @@
       <ion-card-subtitle>{{book.authors}}</ion-card-subtitle>
       <ion-card-title>{{book.title}}</ion-card-title>
       <ion-chip color="tertiary">
-        <ion-label>{{book.bookConditions.condition.description}}</ion-label>
+        <ion-label>{{book.bookConditions ? book.bookConditions.condition.description : ''}}</ion-label>
       </ion-chip>
     </ion-card-header>
     <ion-card-content>
@@ -33,7 +33,7 @@
         </ion-item-divider>
 
         <ion-item>
-          <ion-label>Género: {{book.gender.name}}</ion-label>
+          <ion-label>Género: {{book.gender ? book.gender.name : ''}}</ion-label>
         </ion-item>
 
         <ion-item>
@@ -57,7 +57,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Estado: {{book.bookConditions.personalOpinion}}</ion-label>
+          <ion-label>Estado: {{book.bookConditions ? book.bookConditions.personalOpinion : ''}}</ion-label>
         </ion-item>
 
       </ion-item-group>
@@ -76,5 +76,5 @@
 
     </ion-card-content>
   </ion-card>
-  </div>
+</div>
 </ion-content>
