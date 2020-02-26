@@ -18,6 +18,10 @@ export class LocationService {
     return this.locationApi.findById(id);
   }
 
+  getByUserId(id: Number): Observable<Location> {
+    return this.locationApi.findOne({where:{userId: id}});
+  }
+
   create(location: Location): Observable<Location> {
     return this.locationApi.create(location);
   }

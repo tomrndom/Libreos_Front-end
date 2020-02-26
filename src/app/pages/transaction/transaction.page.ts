@@ -10,8 +10,8 @@ import { AppUserService } from 'src/app/services/api/app-user.service';
 })
 export class TransactionPage implements OnInit {
   user: any;
-  requestTransactions: any;
-  pendingTransactions: any;
+  requestTransactions: any = [];
+  pendingTransactions: any = [];
 
   constructor(
     private navCtrl: NavController,

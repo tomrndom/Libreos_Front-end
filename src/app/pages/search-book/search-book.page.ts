@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { BookService } from 'src/app/services/api/book.service';
-import { map } from 'rxjs/operators';
+import { map, tap, switchMap } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { LoopBackFilter } from 'src/app/services/sdk';
@@ -35,16 +35,18 @@ export class SearchBookPage implements OnInit {
     })
   }
 
-  async searchBooks(postalCode: number) {
+  async searchBooks() {
     const loading = await this.loadingCtrl.create({
       message: 'Buscando...',
     });
     await loading.present();
 
+    let postalCode: number;
+
     let filter: LoopBackFilter = {
       "where": {
         "and": [
-          { "cityCP": 5500 },
+          { "cityCP": postalCode },
           { "userId": { "neq": this.userId } },
         ]
       },
@@ -70,18 +72,23 @@ export class SearchBookPage implements OnInit {
       }]
     }
 
+    let postalCode$ = this._locationService.getByUserId(this.userId);
+    let findedBooks$ = this._locationService.getAll(filter);    
 
-    this._locationService.getAll(filter).subscribe((res: any) => {
-      console.log('RESPUESTA', res)
-      res.map(i => {
-        i.user.userBooks.map(book => {
-          if (book.book) {
-            this.bookList.push(book.book);
-          }
+    postalCode$.pipe(
+      tap(code => postalCode = code.cityCp),
+      switchMap(() => findedBooks$)
+    ).subscribe(
+      (res: any) => {
+        res.map(i => {
+          i.user.userBooks.map(book => {
+            if (book.book) {
+              this.bookList.push(book.book);
+            }
+          });
         });
-      });
-      if (this.bookList.length === 0) this.message = "No se encontraron resultados";
-      loading.dismiss();
+        if (this.bookList.length === 0) this.message = "No se encontraron resultados";
+        loading.dismiss();
     });
   }
 
