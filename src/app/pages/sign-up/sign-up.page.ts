@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AppUserService } from 'src/app/services/api/app-user.service';
 import { MessageService } from 'src/app/services/alerts/message.service';
+import { LocationService } from 'src/app/services/api/location.service';
+import { Location } from 'src/app/services/sdk';
 
 @Component({
   selector: 'app-sign-up',
@@ -26,6 +28,7 @@ export class SignUpPage implements OnInit {
   constructor(
     public navCtrll: NavController,
     private _alertService: MessageService,
+    private _locationService: LocationService,
     private _userService: AppUserService
   ) { }
 
@@ -42,11 +45,26 @@ export class SignUpPage implements OnInit {
       let user = { ...this.user, confirmPassword: undefined }
       this._userService.createUser(user).subscribe(
         res => {
-          this._userService.login(this.user.username, this.user.password)
-            .subscribe((rs) => {
-              this._alertService.signUp()
-              this.navCtrll.navigateForward('start-guide');
-            });
+          console.log('User Creado', res)
+          let location: Location = {
+            id: 0,
+            latitude: '0',
+            longitude: '0',
+            cityCp: 5500,
+            userId: res.id
+          }
+          this._locationService.create(location).subscribe(
+            res => {
+              console.log('Location Creada', res)
+              this._userService.login(this.user.username, this.user.password)
+                .subscribe(
+                  (res) => {
+                    console.log('User Login', res)
+                    this._alertService.signUp()
+                    this.navCtrll.navigateForward('start-guide');
+                  });
+            })
+
         },
         err => {
           this._alertService.presentAlert(err)
