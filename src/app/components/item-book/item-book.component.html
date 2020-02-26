@@ -1,12 +1,10 @@
-<ion-item>
-  <ion-avatar slot="start">
+<ion-row>
+  <ion-card>
     <img src="{{book.image}}">
-  </ion-avatar>
-  <ion-label>
-    <h3>{{book.title}}</h3>
-    <p>{{book.authors}}</p>
-    <p *ngIf="book.synopsys"> {{book.synopsys}} </p>
-    <p *ngIf="!book.synopsys"> Este libro no posee descripción.</p>
+    <ion-card-header>
+      <ion-card-subtitle>{{book.authors}}</ion-card-subtitle>
+      <ion-card-title>{{book.title}}</ion-card-title>
+    </ion-card-header>
 
     <ion-chip *ngIf="(book.available)" color="success">
       <ion-label>Disponible</ion-label>
@@ -21,13 +19,18 @@
         <ion-label>Leyendo </ion-label>
       </ion-chip>
     </div>
+  
+    <ion-card-content>
+      {{  book.synopsys ? 
+            book.synopsys.length > 100 ? 
+              (book.synopsys | slice:0:100) + (book.synopsys.length > 100 ? '...' : '') : 
+            (book.synopsys + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+          : 'Este libro no posee descripción.'}}      
+    </ion-card-content>
 
-  </ion-label>
-
-  <br>
-
-  <div class="ion-text-right">
-    <ion-button (click)="viewDetailBook()">Ver libro</ion-button>
-    <ion-button *ngIf="(book.reading)" color="warning" (click)="finishBook()">Terminar de Leer</ion-button>
-  </div>
-</ion-item>
+    <div class="ion-text-right">
+      <ion-button (click)="viewDetailBook()">Ver libro</ion-button>
+      <ion-button *ngIf="(book.reading)" color="warning" (click)="finishBook()">Terminar de Leer</ion-button>
+    </div>
+  </ion-card>
+</ion-row>

@@ -43,10 +43,10 @@
       <ion-row> 
           <ion-item *ngIf="message">
             <ion-label>{{message}}</ion-label>
-          </ion-item>
-        <ion-item *ngFor="let book of bookList">
+          </ion-item>        
+        <ion-list *ngFor="let book of bookList">
           <app-item-book [book]="book"></app-item-book>
-        </ion-item>
+        </ion-list>
       </ion-row>
     </ion-grid>
   </div>
