@@ -87,9 +87,11 @@ export class HomePage {
   openTutorial() {
     this.storage.get('tutorial_done').then((val) => {
       if(!val) {
-        this.menuCtrl.enable(false);    
+        this.menuCtrl.enable(false);
         this.storage.set('tutorial_done', false);
         this.router.navigateByUrl('/start-guide');
+      } else {
+        this.menuCtrl.enable(true);
       }
     })    
   }
