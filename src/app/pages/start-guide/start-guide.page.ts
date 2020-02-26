@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-start-guide',
@@ -10,10 +11,12 @@ import { NavController } from '@ionic/angular';
 export class StartGuidePage {
 
   constructor(
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private storage: Storage
   ) { }
 
   goToHome() {
+    this.storage.set('tutorial_done', true);
     this.navCtrl.navigateForward('home');
   }
 
